@@ -1,10 +1,12 @@
 {% extends 'todos/base.html' %}
 
 {% block content %}
-<div><h1>Mene gonderilenler</h1></div>
-<div><h2>Menim gonderdiklerim</h2></div>
+
 {% if request.user.is_authenticated %}
 <h1>{{request.user}}</h1>
+
+<div><h1>Mene gonderilenler</h1></div>
+
 <a href= "{% url "logout"  %}" >logout</a>
 {% else %}
 <h1><a href= "{% url "login" %}" >login</a></h1>
@@ -17,7 +19,7 @@
 <div>{{i.due_to}}</div>
 <div>{{i.created_at}}</div>
 <div>{{i.update_at}}</div>
-<div>{{i.isCompleted}}</div>
+<div>{{i.is_completed}}</div>
 {% if i.read_only %}
 <form method="POST">
     <input type="hidden" name="task_id" value={{i.id}}>
@@ -28,10 +30,13 @@
 </form>
 {% else %}
 
-
 {% endif %}
 
-
-
 {% endfor %}
+
+<form method="post" action="{% url 'index' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary">Geriyə qayıt</button>
+</form>
+
 {% endblock %}

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form by Colorlib</title>
+    <title>Sign Up Form</title>
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="{% static 'asserts/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
@@ -18,11 +18,13 @@
 <div class="main">
 
     <!-- Sing in  Form -->
+    {% if not request.user.is_authenticated %}
+
     <section class="sign-in">
         <div class="container">
             <div class="signin-content">
                 <div class="signin-image">
-                    <figure><img src="{% static 'asserts/images/signin-image.jpg' %}" alt="sing up image"></figure>
+                    <!-- <figure><img src="{% static 'asserts/images/signin-image.jpg' %}" alt="sing up image"></figure> -->
                     <a href="{% url 'register' %}" class="signup-image-link">Create an account</a>
                 </div>
 
@@ -51,6 +53,14 @@
             </div>
         </div>
     </section>
+    {% else %}
+    <h1>You are already logged in</h1>
+    <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-primary">Show TODOS</button>
+    </form>
+    {% endif %}
+
 
 </div>
 

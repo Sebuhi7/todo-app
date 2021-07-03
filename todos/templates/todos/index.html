@@ -16,7 +16,7 @@
 <div>{{i.due_to}}</div>
 <div>{{i.created_at}}</div>
 <div>{{i.update_at}}</div>
-<div>{{i.isCompleted}}</div>
+<div>{{i.is_completed}}</div>
 <form method="POST" action="{% url "sent_user" id=i.id %}">
     {% csrf_token %}
 <input type="text" name="sent_user">
@@ -25,4 +25,8 @@ comment yaza bilsinmi:<input type="checkbox" name="read_only">
 </form>
 
 {% endfor %}
+<form method="post" action="{% url 'add' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary">Create new TODO</button>
+</form>
 {% endblock %}

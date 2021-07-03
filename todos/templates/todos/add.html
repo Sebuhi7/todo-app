@@ -26,7 +26,7 @@
         {% csrf_token %}
         <div class="form-row">
           <div class="col-md-12">
-          {  % render_field form.title  class="form-control" %}
+          {% render_field form.title  class="form-control" %}
           </div>
           
           <div class="col-md-12">
@@ -38,7 +38,7 @@
           </div>
 
           <div class="col-md-12">
-            isCompleted:{% render_field form.isCompleted  class="form-control" %}
+            is_completed:{% render_field form.is_completed  class="form-control" %}
           </div>
           <div class="col-md-12">
             <button type="submit" name="submit" class="btn btn-outline-primary">
@@ -46,6 +46,10 @@
             </button>
           </div>
         </div>
+      </form>
+      <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-primary">TODOS</button>
       </form>
     </div>
   </div>
@@ -56,12 +60,13 @@
     <div class="offset-md-2 col-lg-6">
       <div class="list-group">
         {% for todo in todo_list %}
-        <div class="list-group-item {% if todo.isCompleted %} todo-complete {% endif %}">
+        <div class="list-group-item {% if todo.is_completed %} todo-complete {% endif %}">
           <form style="display: inline;" method="post" action="{% url 'update' todo.id %}">
             {% csrf_token %}
-            <input type="checkbox" name="isCompleted" onchange="this.form.submit()" {% if todo.isCompleted %} checked
+            <input type="checkbox" name="is_completed" onchange="this.form.submit()" {% if todo.is_completed %} checked
               {% endif %} class="todo-status-checkbox"
-              title="{% if not todo.isCompleted %} mark as done {% else %} mark undone {% endif %}">
+            <button type="submit" formaction="{% url 'index' %}" class="btn btn-outline-primary">TODOS</button>
+            title="{% if not todo.is_completed %} mark as done {% else %} mark undone {% endif %}">
           </form>
           {{ todo.title }}
           <a href="{% url 'delete' todo.id %}" title="Delete">
