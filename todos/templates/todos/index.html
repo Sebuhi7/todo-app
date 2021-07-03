@@ -1,0 +1,28 @@
+{% extends 'todos/base.html' %}
+
+{% block content %}
+<div><a href="{% url "sent_from_view" %}">Mene gonderilenler</a></div>
+<div><a href="{% url "sent_to_view" %}">Menim gonderdiklerim</a></div>
+{% if request.user.is_authenticated %}
+<h1>{{request.user}}</h1>
+<a href= "{% url "logout"  %}" >logout</a>
+{% else %}
+<h1><a href= "{% url "login" %}" >login</a></h1>
+<h1><a href= "{% url "register" %}" >register</a></h1>
+{% endif %}
+{% for i in lists %}
+<a href="{% url "update" todo_id=i.id %}"><div>{{i.title}}</div></a>
+<div>{{i.description}}</div>
+<div>{{i.due_to}}</div>
+<div>{{i.created_at}}</div>
+<div>{{i.update_at}}</div>
+<div>{{i.isCompleted}}</div>
+<form method="POST" action="{% url "sent_user" id=i.id %}">
+    {% csrf_token %}
+<input type="text" name="sent_user">
+comment yaza bilsinmi:<input type="checkbox" name="read_only">
+<input type="submit" value="gonder">
+</form>
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'todos/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Todo list</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- title row -->
+  <div class="row">
+    <div class="offset-md-2 col-lg-9">
+      <div class="page-header">
+        <h1>
+          Todo List
+        </h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add a todo row -->
+  <div class="row">
+    <div class="offset-md-2 col-lg-9">
+      <form method="post" action="{% url 'update' todo_id=task_id.id %}">
+        {% csrf_token %}
+        <div class="form-row">
+          
+          <div class="col-md-12">
+            {% render_field form.title  class="form-control" %}
+          </div>
+          
+          <div class="col-md-12">
+            {% render_field form.description  class="form-control" %}
+          </div>
+
+          <div class="col-md-12">
+            {% render_field form.due_to  class="form-control" %}
+          </div>
+
+          <div class="col-md-12">
+            isCompleted:{% render_field form.isCompleted  class="form-control" %}
+          </div>
+          <div class="col-md-12">
+            <button type="submit" name="submit" class="btn btn-outline-primary">
+              Update
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr />
+
+  <!-- todo list row -->
+  <div class="row">
+    <div class="offset-md-2 col-lg-6">
+      <div class="list-group">
+        {% for todo in todo_list %}
+        <div class="list-group-item {% if todo.isCompleted %} todo-complete {% endif %}">
+          <form style="display: inline;" method="post" action="{% url 'update' todo.id %}">
+            {% csrf_token %}
+            <input type="checkbox" name="isCompleted" onchange="this.form.submit()" {% if todo.isCompleted %} checked
+              {% endif %} class="todo-status-checkbox"
+              title="{% if not todo.isCompleted %} mark as done {% else %} mark undone {% endif %}">
+          </form>
+          {{ todo.title }}
+          <a href="{% url 'delete' todo.id %}" title="Delete">
+            <i class="far fa-trash-alt"></i>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

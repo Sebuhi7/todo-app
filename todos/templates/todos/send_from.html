@@ -1,0 +1,37 @@
+{% extends 'todos/base.html' %}
+
+{% block content %}
+<div><h1>Mene gonderilenler</h1></div>
+<div><h2>Menim gonderdiklerim</h2></div>
+{% if request.user.is_authenticated %}
+<h1>{{request.user}}</h1>
+<a href= "{% url "logout"  %}" >logout</a>
+{% else %}
+<h1><a href= "{% url "login" %}" >login</a></h1>
+<h1><a href= "{% url "register" %}" >register</a></h1>
+{% endif %}
+{% for i in sent_from_tasks %}
+
+<div>{{i.title}}</div>
+<div>{{i.description}}</div>
+<div>{{i.due_to}}</div>
+<div>{{i.created_at}}</div>
+<div>{{i.update_at}}</div>
+<div>{{i.isCompleted}}</div>
+{% if i.read_only %}
+<form method="POST">
+    <input type="hidden" name="task_id" value={{i.id}}>
+    <textarea name="comment">
+
+    </textarea>
+    <input type="submit" value="gonder">
+</form>
+{% else %}
+
+
+{% endif %}
+
+
+
+{% endfor %}
+{% endblock %}
